@@ -1,0 +1,19 @@
+environment variable set to NODE_PATH = C:\Users\Aayush\node_modules\
+
+connect, express, express-generator installed in NODE_PATH using npm install express. 
+	
+installed /myapp on URLShortner using 
+	1) npm install express-generator
+	2) express myapp -e //-e for ejs
+		2.a) myapp has package.json file that lists all of its dependencies
+	3) npm install //installs all the dependencies in node_modules folder in the same directory
+	4) change package.json, remove "jade" and add "ejs": "^1.0.0" 
+		4.a) npm install //again
+
+
+Adding new pages:
+1) Create a ejs file for the new page in /views
+2) on app.js, add 
+	var pagename = require (./routes/pagename');
+	app.use('/pagename', pagename);
+3) create a .js file for the page in /routes
