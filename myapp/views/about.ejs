@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+  
+   <% include templates/header.ejs %>
+	<h1>About</h1>
+   <ul>
+    <% for(var i = 0; i < 5; i++){ %>
+    	<li> aayush </li>
+    <% } %>
+    
+
+	</ul>
+	<p> <%= videodata.categories[0].categoryName %></p>
+
+	<ul>
+	<% videodata.categories.forEach(function (item){ %>
+	<li><a href="<%= item.categoryID %>"><%= item.categoryName %></a></li>
+	<% }); %>
+
+	<%= videodata.categories[1].subjectID %>
+	</ul>
+  </body>
+</html>
