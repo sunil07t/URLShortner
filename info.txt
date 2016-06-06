@@ -21,4 +21,7 @@ Adding new pages:
 
 MONGODB
 
-create new directory directory 'data/db' in C:
+1) create new directory directory 'data/db' in C:
+2) download mongodb from mongodb.org, save the files anywhere in computer
+3) go to ../myapp and 'npm install --save mongodb' and that install the proper modules for node. It also updates packages.json
+ 
