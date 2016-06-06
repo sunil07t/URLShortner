@@ -17,3 +17,8 @@ Adding new pages:
 	var pagename = require (./routes/pagename');
 	app.use('/pagename', pagename);
 3) create a .js file for the page in /routes
+
+
+MONGODB
+
+create new directory directory 'data/db' in C:
