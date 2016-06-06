@@ -6,8 +6,10 @@ var cookieParser = require('cookie-parser'); //handling cookies
 var bodyParser = require('body-parser');  //handling text/json body
 
 var routes = require('./routes/index');   //controller
-var about = require('./routes/about');   //controller
-var users = require('./routes/users');    //controller
+var about = require('./routes/about');  
+var account = require ('./routes/account');
+var login = require ('./routes/login');
+var register = require ('./routes/register');
 
 var app = express(); //initialize express
 
@@ -29,8 +31,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 //define new pages here
 //then create a new route (controller)
 //routes will render a view
-app.use('/', routes);
-app.use('/users', users);
+app.use('/', routes); //home
+app.use('/account', account);
+app.use('/login', login);
+app.use('/register', register);
 app.use('/about', about);
 
 // catch 404 and forward to error handler

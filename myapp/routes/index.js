@@ -8,9 +8,7 @@ var url = 'mongodb://localhost:27017/test'; //port 27017, db = test
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { 
-  	title: 'Express',
-  	x : 'this is routes/index.js',
-  	videodata: videodata,
+  	title: 'URL Shortner'
   	 });
 });
 
