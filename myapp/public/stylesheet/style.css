@@ -1,5 +1,4 @@
 body {
-  padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
@@ -17,4 +16,8 @@ a {
 }
 .navbar-toggle {
     z-index:3;
+}
+
+.url-body{
+	height:600px;
 }
