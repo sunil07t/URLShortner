@@ -4,6 +4,15 @@ var favicon = require('serve-favicon');
 var logger = require('morgan'); //logging info in terminal
 var cookieParser = require('cookie-parser'); //handling cookies
 var bodyParser = require('body-parser');  //handling text/json body
+var expressValidator = require('express-validator');//to validate the input
+var flash = require('connect-flash'); //flash
+var session = require('express-session'); //expression session
+var passport = require('passport'); //passport authentication
+//var HttpStrategy = require('passport-http').Strategy;
+var monogdb = require('mongodb');
+var mongoose = require('mongoose');// Mondodc ORM
+mongoose.connect('mongodb://localhost/login'); //connect to the login db
+var db = mongoose.connection; //set db to mondoose connection
 
 var routes = require('./routes/index');   //controller
 var about = require('./routes/about');  
@@ -67,6 +76,46 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
+
+//Express Session have to looking this
+app.use(session({
+  secert: 'topSecret',
+  saveUninitialize: true,
+  resave: true,
+}));
+
+//Passport initialization
+app.use(passport.initialize());
+app.use(passport.session());
+
+//Express Validator from the express validator github
+app.use(expressValidator({
+  errorFormatter: function(param, msg, value) {
+      var namespace = param.split('.')
+      , root    = namespace.shift()
+      , formParam = root;
+
+    while(namespace.length) {
+      formParam += '[' + namespace.shift() + ']';
+    }
+    return {
+      param : formParam,
+      msg   : msg,
+      value : value
+    };
+  }
+}));
+
+// Connect flash middleware
+app.use(flash());
+
+// Global Vars for flash messages
+app.use(function (req, res, next){
+  res.locals.success_msg = req.flash('success_msg');
+  res.locals.error_msg = req.flash('error_msg');
+  res.locals.error = req.flash('error'); //passport sends its own errow message
+  next();
+})
 
 
 module.exports = app;

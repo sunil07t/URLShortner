@@ -25,3 +25,12 @@ MONGODB
 2) download mongodb from mongodb.org, save the files anywhere in computer
 3) go to ../myapp and 'npm install --save mongodb' and that install the proper modules for node. It also updates packages.json
  
+Install
+	Mongoose
+	bcrypt
+	passport
+	passport-html
+	express-validator
+	express-session
+	express-messages
+	connect-flash
