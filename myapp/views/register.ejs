@@ -10,29 +10,29 @@
 
 <!-- Insert Body here -->
 <div class="container">
-	<form class="form-horizontal" action = "/register">
+	<form class="form-horizontal" method="POST" action = "/register">
 	  <div class="form-group">
 	    <label for="inputEmail" class="col-sm-2 control-label">Email</label>
 	    <div class="col-sm-10">
-	      <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+	      <input type="email" name="email" class="form-control" id="inputEmail" placeholder="Email">
 	    </div>
 	  </div>
 	  <div class="form-group">
 	    <label for="inputUsername" class="col-sm-2 control-label">Username</label>
 	    <div class="col-sm-10">
-	      <input type="text" class="form-control" id="inputUsername" placeholder="Username">
+	      <input type="text" name="username" class="form-control" id="inputUsername" placeholder="Username">
 	    </div>
 	  </div>
 	  <div class="form-group">
 	    <label for="inputPassword" class="col-sm-2 control-label">Password</label>
 	    <div class="col-sm-10">
-	      <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+	      <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password">
 	    </div>
 	  </div>
 	   <div class="form-group">
-	    <label for="inputPassword2" class="col-sm-2 control-label">Confrim Password</label>
+	    <label for="inputPassword2" class="col-sm-2 control-label">Confirm Password</label>
 	    <div class="col-sm-10">
-	      <input type="password" class="form-control" id="inputPassword2" placeholder="Password">
+	      <input type="password" name="password2" class="form-control" id="inputPassword2" placeholder="Confirm Password">
 	    </div>
 	  </div>
 	  <div class="form-group">
@@ -42,6 +42,12 @@
 	  </div>
 	</form>
 </div><!-- /.container -->
+
+	<ul>
+	<% for (i = 0; i < errors.length; i++) { %>
+		<li> <%= errors[i].msg %> </li>
+	<% } %>
+	</ul>
 
 <% include templates/footer.ejs%>
 
