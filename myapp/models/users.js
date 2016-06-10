@@ -1,8 +1,26 @@
 var mongoose = require ('mongoose');
-var Schema = mongoose.Schema;
 
-var usersSchema = new Schema({
-	name: String
+//users schema
+
+var usersSchema = mongoose.Schema({
+	username: {
+		type: String,
+		required: true
+	},
+	password: {
+		type: String,
+		required: true
+	},
+	create_date:{
+		type: Date, 
+		default: Date.now
+	}
 });
 
-mongoose.model('users', usersSchema);
+var users = module.exports = mongoose.model('users', usersSchema);
+
+// get users
+
+module.exports.getUsers = function(callback, limit){
+	users.find(callback).limit(limit);
+}

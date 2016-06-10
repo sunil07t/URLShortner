@@ -11,7 +11,7 @@ var passport = require('passport'); //passport authentication
 //var HttpStrategy = require('passport-http').Strategy;
 var monogdb = require('mongodb');
 var mongoose = require('mongoose');// Mondodc ORM
-mongoose.connect('mongodb://localhost/login'); //connect to the login db
+mongoose.connect('mongodb://localhost/test'); //connect to the login db
 var db = mongoose.connection; //set db to mondoose connection
 
 var routes = require('./routes/index');   //controller
@@ -61,6 +61,27 @@ app.use('/account', account);
 app.use('/login', login);
 app.use('/register', register);
 app.use('/about', about);
+
+Users = require('./models/users.js');
+Urls = require('./models/urls.js');
+
+app.get('/api/users', function(req, res){ 
+  Users.getUsers(function(err, users){
+    if(err){
+      throw err;
+    }
+    res.json(users);
+  });
+});
+
+app.get('/api/urls', function(req, res){ 
+  Urls.getUrls(function(err, urls){
+    if(err){
+      throw err;
+    }
+    res.json(urls);
+  });
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

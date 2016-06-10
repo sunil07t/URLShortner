@@ -34,3 +34,8 @@ Install
 	express-session
 	express-messages
 	connect-flash
+
+
+import and export databases: 
+http://stackoverflow.com/a/27705887
+
