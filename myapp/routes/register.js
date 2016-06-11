@@ -19,29 +19,24 @@ router.post('/', function(req, res, next) {
   console.log (username, email, password, password2);
 
   //Validation
-  req.checkBody('username', 'Username is required').isEmail();
+  req.checkBody('username', 'Username is required').notEmpty();
   req.checkBody('email', 'Email is required').notEmpty();
   req.checkBody('email', 'Email is not valid').isEmail();
   req.checkBody('password', 'Password is required').notEmpty();
-  req.checkBody('password', 'Password has to be at least 8 character long and a number').isLength({min: 8}).isInt({min: 1});
+  //req.checkBody('password', 'Password has to be at least 8 character long and a number').isLength({min: 8}).isInt({min: 1});
   req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
   
   //Check errors
   var errors = req.validationErrors();
-  console.log("2");
-  console.log(errors);
-
  if(errors){
-  for (var i = 0; i < errors.length; i++) {
-    console.log(errors[i].msg);
-  }
   	res.render('register',{
-      title: 'Register',
   		errors: errors
   	});
   }
   else{
   	console.log('PASSED');
+    res.redirect('/login');
+    errors: "";
   }
 });
 
