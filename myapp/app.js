@@ -26,7 +26,6 @@ var register = require ('./routes/register');
 var app = express(); //initialize express
 
 app.locals.points = "1,500";
-app.locals.videodata = require('./videodata.json');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));  //where/how views are handled
 app.engine('handlebars', exphbs({defaultLayout:'layout', layoutsDir: __dirname + '/views/layouts'}));
@@ -55,6 +54,7 @@ app.use(expressValidator({
 }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
 
 
 //define new pages here
