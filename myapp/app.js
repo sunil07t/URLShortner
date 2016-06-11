@@ -8,9 +8,12 @@ var expressValidator = require('express-validator');//to validate the input
 var flash = require('connect-flash'); //flash
 var session = require('express-session'); //expression session
 var passport = require('passport'); //passport authentication
+var exphbs = require('express-handlebars');// express engine
+
 //var HttpStrategy = require('passport-http').Strategy;
 var monogdb = require('mongodb');
 var mongoose = require('mongoose');// Mondodc ORM
+
 mongoose.connect('mongodb://localhost/test'); //connect to the login db
 var db = mongoose.connection; //set db to mondoose connection
 
@@ -26,7 +29,8 @@ app.locals.points = "1,500";
 app.locals.videodata = require('./videodata.json');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));  //where/how views are handled
-app.set('view engine', 'ejs');  //view engine. ejs vs jade
+app.engine('handlebars', exphbs({defaultLayout:'layout', layoutsDir: __dirname + '/views/layouts'}));
+app.set('view engine', 'handlebars');  //view engine. ejs vs jade
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
