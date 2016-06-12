@@ -17,7 +17,7 @@ var mongoose = require('mongoose');// Mondodc ORM
 mongoose.connect('mongodb://localhost/test'); //connect to the login db
 var db = mongoose.connection; //set db to mondoose connection
 
-var routes = require('./routes/index');   //controller
+var routes = require('./routes/index');  //controller
 var about = require('./routes/about');  
 var account = require ('./routes/account');
 var login = require ('./routes/login');
