@@ -1,15 +1,16 @@
 var mongoose = require ('mongoose');
-
+var bcrypt = require('bcryptjs');// to hash the password
 //users schema
 
 var usersSchema = mongoose.Schema({
 	username: {
-		type: String,
-		required: true
+		type: String
 	},
 	password: {
-		type: String,
-		required: true
+		type: String
+	},
+	email: {
+		type: String
 	},
 	create_date:{
 		type: Date, 
@@ -17,10 +18,20 @@ var usersSchema = mongoose.Schema({
 	}
 });
 
-var users = module.exports = mongoose.model('users', usersSchema);
+var Users = module.exports = mongoose.model('Users', usersSchema);
 
+//bcrypt copied from 
+module.exports.createUser = function(newUser, callback){
+	bcrypt.genSalt(10, function(err, salt) {
+    bcrypt.hash(newUser.password, salt, function(err, hash) {
+        newUser.password = hash;
+        newUser.save();
+    });
+});
+}
 // get users
-
+/*
 module.exports.getUsers = function(callback, limit){
 	users.find(callback).limit(limit);
 }
+*/
