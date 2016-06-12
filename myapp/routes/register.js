@@ -45,9 +45,10 @@ router.post('/', function(req, res, next) {
         throw err;
       console.log(user); //Check on this later
     })
-    //req.flash('success_msg', 'Welcome to Sikkad');
     console.log("SUCESS!");
-    res.redirect('/');
+    res.render('index', {
+      'success_msg': 'Welcome to Sikkad!'
+    });
     errors: "";
   }
 });

@@ -30,8 +30,7 @@ module.exports.createUser = function(newUser, callback){
 });
 }
 // get users
-/*
+
 module.exports.getUsers = function(callback, limit){
-	users.find(callback).limit(limit);
+	Users.find(callback).limit(limit);
 }
-*/
