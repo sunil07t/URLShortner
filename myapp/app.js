@@ -17,12 +17,6 @@ var mongoose = require('mongoose');// Mondodc ORM
 mongoose.connect('mongodb://localhost/test'); //connect to the login db
 var db = mongoose.connection; //set db to mondoose connection
 
-var routes = require('./routes/index');  //controller
-var about = require('./routes/about');  
-var account = require ('./routes/account');
-var login = require ('./routes/login');
-var register = require ('./routes/register');
-
 var app = express(); //initialize express
 
 app.locals.points = "1,500";
@@ -56,7 +50,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-
+var routes = require('./routes/index');  //controller
+var about = require('./routes/about');  
+var account = require ('./routes/account');
+var login = require ('./routes/login');
+var register = require ('./routes/register');
+var logout = require ('./routes/logout');
 //define new pages here
 //then create a new route (controller)
 //routes will render a view
@@ -65,6 +64,7 @@ app.use('/account', account);
 app.use('/login', login);
 app.use('/register', register);
 app.use('/about', about);
+app.use('/logout', logout);
 
 Users = require('./models/users.js');
 Urls = require('./models/urls.js');
@@ -124,6 +124,16 @@ app.use(session({
   saveUninitialize: true,
   resave: true,
 }));
+// Connect flash middleware
+app.use(flash());
+
+// Global Vars for flash messages
+app.use(function (req, res, next){
+  res.locals.success_msg = req.flash('success_msg');
+  res.locals.error_msg = req.flash('error_msg');
+  res.locals.error = req.flash('error'); //passport sends its own errow message
+  next();
+})
 
 //Passport initialization
 app.use(passport.initialize());
@@ -147,16 +157,9 @@ app.use(passport.session());
   }
 }));*/
 
-// Connect flash middleware
-app.use(flash());
 
-// Global Vars for flash messages
-app.use(function (req, res, next){
-  res.locals.success_msg = req.flash('success_msg');
-  res.locals.error_msg = req.flash('error_msg');
-  res.locals.error = req.flash('error'); //passport sends its own errow message
-  next();
-})
+
+
 
 
 module.exports = app;
