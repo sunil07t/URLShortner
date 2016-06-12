@@ -13,7 +13,6 @@ var exphbs = require('express-handlebars');// express engine
 //var HttpStrategy = require('passport-http').Strategy;
 var monogdb = require('mongodb');
 var mongoose = require('mongoose');// Mondodc ORM
-
 mongoose.connect('mongodb://localhost/test'); //connect to the login db
 var db = mongoose.connection; //set db to mondoose connection
 

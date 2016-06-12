@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var flash = require('connect-flash');
 
 var User = require('../models/users');
 
@@ -36,27 +35,26 @@ router.post('/', function(req, res, next) {
   	res.render('register',{
   		errors: errors
   	});
-  }
-  else{
+  } else{
   	console.log('PASSED');
-    //send the signup data to model to enter in database
-
-    
+    //send the signup data to model to enter in database    
   	var newUser =  new User({
-      username: username,
-      password: password,
-      email: email
+              username: username,
+              password: password,
+              email: email
     });
 
     User.createUser(newUser, function(err,user){
-      if(err)
-        throw err;
+      if(err) throw err;
       console.log(user); //Check on this later
     });
+
     //req.flash('success_msg', 'Welcome to Sikkad');
-    res.redirect('/login');
+    //res.redirect('/login');
+    res.render('index', { 
+      success_msg: 'Successfully Registered!',
+       });
     console.log("SUCESS!");
-    errors: "";
   }
 });
 
