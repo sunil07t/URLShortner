@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var flash = require('connect-flash');
 
 var User = require('../models/users');
 
@@ -23,7 +24,7 @@ router.post('/', function(req, res, next) {
   req.checkBody('email', 'Email is required').notEmpty();
   req.checkBody('email', 'Email is not valid').isEmail();
   req.checkBody('password', 'Password is required').notEmpty();
-  req.checkBody('password', 'Password has to be at least 8 character long and a number').isLength({min: 8}).isInt({min: 1});
+  //req.checkBody('password', 'Password has to be at least 8 character long and a number').isLength({min: 8}).isInt({min: 1});
   req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
   
   //Check errors
@@ -40,7 +41,7 @@ router.post('/', function(req, res, next) {
   	console.log('PASSED');
     //send the signup data to model to enter in database
 
-    res.redirect('/login');
+    
   	var newUser =  new User({
       username: username,
       password: password,
@@ -51,10 +52,10 @@ router.post('/', function(req, res, next) {
       if(err)
         throw err;
       console.log(user); //Check on this later
-    })
+    });
     //req.flash('success_msg', 'Welcome to Sikkad');
+    res.redirect('/login');
     console.log("SUCESS!");
-    res.redirect('/');
     errors: "";
   }
 });
