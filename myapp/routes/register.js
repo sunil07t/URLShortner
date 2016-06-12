@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
+var User = require('../models/users');
 
 /* GET about page. */
 router.get('/', function(req, res, next) {
@@ -16,7 +17,6 @@ router.post('/', function(req, res, next) {
   var password = req.body.password;
   var password2 = req.body.password;
 
-  console.log (username, email, password, password2);
 
   //Validation
   req.checkBody('username', 'Username is required').notEmpty();
@@ -41,6 +41,20 @@ router.post('/', function(req, res, next) {
     //send the signup data to model to enter in database
 
     res.redirect('/login');
+  	var newUser =  new User({
+      username: username,
+      password: password,
+      email: email
+    });
+
+    User.createUser(newUser, function(err,user){
+      if(err)
+        throw err;
+      console.log(user); //Check on this later
+    })
+    //req.flash('success_msg', 'Welcome to Sikkad');
+    console.log("SUCESS!");
+    res.redirect('/');
     errors: "";
   }
 });
