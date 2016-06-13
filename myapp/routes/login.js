@@ -7,11 +7,26 @@ var User = require('../models/users');
 
 
 /* GET about page. */
-router.get('/', function(req, res, next) {
-  res.render('login', { 
+
+/**
+req.user checks if a user is logged in or not. 
+if yes, go to accout/* page (* is username)
+else, render a login page
+*/
+router.get('/', loginGet);
+
+function loginGet (req, res, next) {
+  if (!req.user){
+    res.render('login', {message: req.session.messages});
+    req.session.messages = null;
+  }
+  else{
+    res.redirect('/account/' + req.user.username);
+  }
+/*  res.render('login', { 
     title: 'login',
-  	 });
-});
+  	 });*/
+}
 
 /*// logining the user
 router.post('/', function(req, res, next) {
@@ -74,15 +89,55 @@ passport.deserializeUser(function(id, done) {
     res.redirect('/account');
   });*/
 
-  router.post('/', passport.authenticate('local'),
-    function(req, res) {
-      // If this function gets called, authentication was successful.
-      // `req.user` contains the authenticated user.
-      res.redirect('/account/' + req.user.username);
-      // res.render('index', { 
-      // success_msg: 'Signed in as ' + req.user.username,
-      //  });
+/*router.post('/', passport.authenticate('local'),
+  function(req, res) {
+    // If this function gets called, authentication was successful.
+    // `req.user` contains the authenticated user.
+    res.redirect('/account/' + req.user.username);
+    // res.render('index', { 
+    // success_msg: 'Signed in as ' + req.user.username,
+    //  });
+  });*/
+
+function isLoggedIn(req, res, next){
+  if (req.user.authenticated)
+    return next();
+  else //if user isnt loggedin
+    res.redirect('/login');
+}
+
+router.post('/', loginPost);
+
+function loginPost(req, res, next) {
+  // ask passport to authenticate
+  passport.authenticate('local', function(err, user, info) {
+    if (err) {
+      // if error happens
+      return next(err);
+    }
+    
+    if (!user) {
+      // if authentication fail, get the error message that we set
+      // from previous (info.message) step, assign it into to
+      // req.session and redirect to the login page again to display
+      req.session.messages = info.message;
+      return res.redirect('/login');
+    }
+
+    // if everything's OK
+    req.logIn(user, function(err) {
+      if (err) {
+        req.session.messages = "Error";
+        return next(err);
+      }
+
+      // set the message
+      req.session.messages = "Login successfully";
+      return res.redirect('/account/' + req.user.username);
     });
+    
+  })(req, res, next);
+}
 
 
 
