@@ -14,6 +14,7 @@ if yes, go to accout/* page (* is username)
 else, render a login page
 */
 router.get('/', loginGet);
+router.post('/', loginPost);
 
 function loginGet (req, res, next) {
   if (!req.user){
@@ -98,15 +99,6 @@ passport.deserializeUser(function(id, done) {
     // success_msg: 'Signed in as ' + req.user.username,
     //  });
   });*/
-
-function isLoggedIn(req, res, next){
-  if (req.user.authenticated)
-    return next();
-  else //if user isnt loggedin
-    res.redirect('/login');
-}
-
-router.post('/', loginPost);
 
 function loginPost(req, res, next) {
   // ask passport to authenticate

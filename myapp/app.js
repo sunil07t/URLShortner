@@ -36,6 +36,14 @@ app.use(session({ secret: 'keyboard cat' }));
 app.use(passport.initialize());
 app.use(passport.session());
 
+//if user is logged in, set a global variable
+
+//**doesnt work because user that hasnt loggedin doesnt have req.user value
+/*app.use(function(req, res, next){
+  res.local.user = req.user;
+  next();
+})*/
+
 
 
 app.use(logger('dev'));
