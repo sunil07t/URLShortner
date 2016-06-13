@@ -26,6 +26,18 @@ app.set('view engine', 'handlebars');  //view engine. ejs vs jade
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+
+
+
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(cookieParser());
+//app.use(bodyParser());
+app.use(session({ secret: 'keyboard cat' }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -45,8 +57,8 @@ app.use(expressValidator({
     };
   }
 }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+//app.use(cookieParser());
+//app.use(express.static(path.join(__dirname, 'public')));
 
 
 var routes = require('./routes/index');  //controller
@@ -118,11 +130,11 @@ app.use(function(err, req, res, next) {
 });
 
 //Express Session have to looking this
-app.use(session({
+/*app.use(session({
   secert: 'topSecret',
   saveUninitialize: true,
   resave: true,
-}));
+}));*/
 // Connect flash middleware
 app.use(flash());
 
@@ -135,8 +147,8 @@ app.use(function (req, res, next){
 })
 
 //Passport initialization
-app.use(passport.initialize());
-app.use(passport.session());
+/*app.use(passport.initialize());
+app.use(passport.session());*/
 
 //Express Validator from the express validator github
 /*app.use(expressValidator({

@@ -41,7 +41,6 @@ router.post('/', function(req, res, next) {
 
 passport.use(new LocalStrategy(
   function(username, password, done){
-    console.log("passport LocalStrategy");
     User.getUsersByUsername(username, function(err, user){
       if(err) throw err;
       if (!user){
@@ -70,10 +69,20 @@ passport.deserializeUser(function(id, done) {
 });
 
 
-router.post('/', passport.authenticate('local'/*, {successRedirect:'/', failureRedirect:'/login', failureFlash: true}*/),
+/*router.post('/', passport.authenticate('local', {successRedirect:'/', failureRedirect:'/login', failureFlash: true}),
   function(req, res){
-    res.redirect('/');
-  });
+    res.redirect('/account');
+  });*/
+
+  router.post('/', passport.authenticate('local'),
+    function(req, res) {
+      // If this function gets called, authentication was successful.
+      // `req.user` contains the authenticated user.
+      res.redirect('/account/' + req.user.username);
+      // res.render('index', { 
+      // success_msg: 'Signed in as ' + req.user.username,
+      //  });
+    });
 
 
 
