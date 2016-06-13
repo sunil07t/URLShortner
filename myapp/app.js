@@ -13,20 +13,12 @@ var exphbs = require('express-handlebars');// express engine
 //var HttpStrategy = require('passport-http').Strategy;
 var monogdb = require('mongodb');
 var mongoose = require('mongoose');// Mondodc ORM
-
 mongoose.connect('mongodb://localhost/test'); //connect to the login db
 var db = mongoose.connection; //set db to mondoose connection
-
-var routes = require('./routes/index');  //controller
-var about = require('./routes/about');  
-var account = require ('./routes/account');
-var login = require ('./routes/login');
-var register = require ('./routes/register');
 
 var app = express(); //initialize express
 
 app.locals.points = "1,500";
-app.locals.videodata = require('./videodata.json');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));  //where/how views are handled
 app.engine('handlebars', exphbs({defaultLayout:'layout', layoutsDir: __dirname + '/views/layouts'}));
@@ -34,6 +26,26 @@ app.set('view engine', 'handlebars');  //view engine. ejs vs jade
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+
+
+
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(cookieParser());
+//app.use(bodyParser());
+app.use(session({ secret: 'keyboard cat' }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+//if user is logged in, set a global variable
+
+//**doesnt work because user that hasnt loggedin doesnt have req.user value
+/*app.use(function(req, res, next){
+  res.local.user = req.user;
+  next();
+})*/
+
+
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -53,10 +65,16 @@ app.use(expressValidator({
     };
   }
 }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+//app.use(cookieParser());
+//app.use(express.static(path.join(__dirname, 'public')));
 
 
+var routes = require('./routes/index');  //controller
+var about = require('./routes/about');  
+var account = require ('./routes/account');
+var login = require ('./routes/login');
+var register = require ('./routes/register');
+var logout = require ('./routes/logout');
 //define new pages here
 //then create a new route (controller)
 //routes will render a view
@@ -65,6 +83,7 @@ app.use('/account', account);
 app.use('/login', login);
 app.use('/register', register);
 app.use('/about', about);
+app.use('/logout', logout);
 
 Users = require('./models/users.js');
 Urls = require('./models/urls.js');
@@ -119,15 +138,26 @@ app.use(function(err, req, res, next) {
 });
 
 //Express Session have to looking this
-app.use(session({
+/*app.use(session({
   secert: 'topSecret',
   saveUninitialize: true,
   resave: true,
-}));
+}));*/
+// Connect flash middleware
+app.use(flash());
+
+// Global Vars for flash messages
+app.use(function (req, res, next){
+  res.locals.success_msg = req.flash('success_msg');
+  res.locals.message = req.flash('message');
+  res.locals.error_msg = req.flash('error_msg');
+  res.locals.error = req.flash('error'); //passport sends its own errow message
+  next();
+})
 
 //Passport initialization
-app.use(passport.initialize());
-app.use(passport.session());
+/*app.use(passport.initialize());
+app.use(passport.session());*/
 
 //Express Validator from the express validator github
 /*app.use(expressValidator({
@@ -147,16 +177,9 @@ app.use(passport.session());
   }
 }));*/
 
-// Connect flash middleware
-app.use(flash());
 
-// Global Vars for flash messages
-app.use(function (req, res, next){
-  res.locals.success_msg = req.flash('success_msg');
-  res.locals.error_msg = req.flash('error_msg');
-  res.locals.error = req.flash('error'); //passport sends its own errow message
-  next();
-})
+
+
 
 
 module.exports = app;

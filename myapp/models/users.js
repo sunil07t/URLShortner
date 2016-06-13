@@ -34,3 +34,22 @@ module.exports.createUser = function(newUser, callback){
 module.exports.getUsers = function(callback, limit){
 	Users.find(callback).limit(limit);
 }
+
+module.exports.getUsersByUsername = function (username, callback){
+	console.log("getuserbyusername");
+	var query = {username: username};
+	console.log(query);
+	Users.findOne(query, callback);
+}
+
+module.exports.comparePassword = function(password, hash, callback){
+	bcrypt.compare(password, hash, function(err, isMatch){
+		if (err) throw err;
+		callback(null, isMatch);
+	})
+}
+
+module.exports.getUserById = function(id, callback){
+	Users.findById(id, callback);
+}
+>>>>>>> upstream/master

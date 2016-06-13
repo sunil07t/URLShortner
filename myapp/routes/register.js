@@ -12,8 +12,8 @@ router.get('/', function(req, res, next) {
 
 // Registering the user
 router.post('/', function(req, res, next) {
-  var username = req.body.username;
   var email = req.body.email;
+  var username = req.body.username;
   var password = req.body.password;
   var password2 = req.body.password;
 
@@ -28,28 +28,34 @@ router.post('/', function(req, res, next) {
   
   //Check errors
   var errors = req.validationErrors();
+  for (var i = 0; i < errors.length; i++) {
+    console.log(errors[i]);
+  }
  if(errors){
   	res.render('register',{
   		errors: errors
   	});
-  }
-  else{
+  } else{
+  	console.log('PASSED');
+    //send the signup data to model to enter in database    
   	var newUser =  new User({
-      username: username,
-      password: password,
-      email: email
+              username: username,
+              password: password,
+              email: email
     });
 
     User.createUser(newUser, function(err,user){
-      if(err)
-        throw err;
+      if(err) throw err;
       console.log(user); //Check on this later
-    })
-    console.log("SUCESS!");
-    res.render('index', {
-      'success_msg': 'Welcome to Sikkad!'
     });
-    errors: "";
+
+    //req.flash('success_msg', 'Welcome to Sikkad');
+    //res.redirect('/login');
+    res.render('index', { 
+      success_msg: 'Successfully Registered!',
+       });
+    console.log("SUCESS!");
+>>>>>>> upstream/master
   }
 });
 
