@@ -1,5 +1,7 @@
 var mongoose = require ('mongoose');
 var bcrypt = require('bcryptjs');// to hash the password
+var mongodb = require('mongodb');
+
 //users schema
 
 
@@ -10,7 +12,7 @@ Username: String, username of a given user
 password: String, password of a given user
 create_data: Date, date when the given username, password were created
 */
-var usersSchema = mongoose.Schema({
+usersSchema = mongoose.Schema({
 	username: {
 		type: String
 	},
@@ -27,7 +29,7 @@ var usersSchema = mongoose.Schema({
 });
 
 //makes the usersSchema accessible from other files too
-var Users = module.exports = mongoose.model('Users', usersSchema);
+Users = module.exports = mongoose.model('Users', usersSchema);
 
 /**
 createUser
@@ -36,38 +38,56 @@ uses bcrypt to salt and hash a given password string
 */
 /**
  * [createUser create new user based on newUser]
- * @param  {[newuser]}   newUser  [newUser object contains username, passwords..]
+ * @param  {[object]}   newUser  [newUser object contains username, passwords..]
  */
 module.exports.createUser = function(newUser, callback){
+	getUsersByUsername(newUser.username, function(err, user){
+		if (user){
+			console.log("Username already exists");
+		}
+	});
 	bcrypt.genSalt(10, function(err, salt) {
     bcrypt.hash(newUser.password, salt, function(err, hash) {
         newUser.password = hash;
         newUser.save();
     });
 });
-}
+};
+
+module.exports.testcreateUser = function(newUser, callback){
+	console.log("testcreateUser");
+	this.getUsersByUsername(newUser.username, function(err, user){
+		console.log("getursname + " + user + err);
+		if (user){
+			console.log("Username already exists");
+		} else {
+			console.log("Username is unique");
+/*			bcrypt.genSalt(10, function(err, salt) {
+	    		bcrypt.hash(newUser.password, salt, function(err, hash) {
+			        newUser.password = hash;
+			        newUser.save();
+	    		});
+			});*/
+		} 
+	})
+
+};
 /**
  * [getUsers returns the number of users based on limit]
  * @param  {[int]}   limit    [default 1; number of items being returned]
  */
 module.exports.getUsers = function(callback, limit){
 	Users.find(callback).limit(limit);
-}
+};
 
 /**
  * [getUsersByUsername return 1 entity that is contains a given username]
  * @param  {[string]}   username [username being queried]
  */
 module.exports.getUsersByUsername = function (username, callback){
-	var query = {username: username};
+	console.log("getusersbyusername");
+	var query = {username: username};	
 	Users.findOne(query, callback);
-	//console.log("callback" + callback);
-}
-
-module.exports.getUsername = function(username, callback){
-	var query = {username: username};
-	Users.findOne(query, callback);
-	console.log("callback" + callback);
 }
 
 /**
@@ -88,6 +108,8 @@ module.exports.comparePassword = function(password, hash, callback){
  */
 module.exports.getUserById = function(id, callback){
 	Users.findById(id, callback);
-}
+};
+
+
 
 

@@ -45,6 +45,7 @@ function loginGet (req, res, next) {
 passport.use(new LocalStrategy(
   function(username, password, done){
     User.getUsersByUsername(username, function(err, user){
+      console.log("passport" + user);
       if(err) throw err;
       if (!user){
         return done(null, false, {message: 'Invalid Username!'});
@@ -60,7 +61,6 @@ passport.use(new LocalStrategy(
       });
     });
   }));
-
 
 
 passport.serializeUser(function(user, done) {
