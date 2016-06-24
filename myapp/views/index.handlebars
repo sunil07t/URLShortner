@@ -1,18 +1,24 @@
+{{#if errors}}
+    {{#each errors}}
+        <div class="alert alert-danger">{{msg}}</div>
+    {{/each}}
+{{/if}}
+
 <!-- Insert Body here -->
 <div class="container">
-
+<form name="url-input" method="POST" action="/">
 	<div class="url">
 		<div class="form-group">
 			<div class="input-group">
-			  <input class="form-control" id="focusedInput" placeholder="Enter URL" type="text" value="" onblur="urlcheck()"> </input>
+			  <input class="form-control" id="focusedInput" placeholder="Enter URL" type="text" name ="input" value=""> </input>
 			 	<span class="input-group-btn">
-			      <input type = "button" class="btn btn-default" value ="Go" onclick="urlcheck()"></input>
+			      <input type = "submit" class="btn btn-default" value ="Go"/>
 				</span>
 			</div>
 		</div>
 
 	</div>
-	
+</form>
 	<div class = "url-body">
 	</div>
 </div><!-- /.container -->
