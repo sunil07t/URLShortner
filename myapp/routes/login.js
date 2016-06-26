@@ -13,9 +13,17 @@ req.user checks if a user is logged in or not.
 if yes, go to accout/* page (* is username)
 else, render a login page
 */
-router.get('/', loginGet);
-router.post('/', loginPost);
+router.get('/', loginGet);    //use loginGet for GET method
+router.post('/', loginPost);  //use loginPost for POST methods
 
+
+/**
+loginGet
+checks if req.user exists. 
+req.user exists if a user is logged in/authorized.
+if user isnt logged in, render the login page.
+if user is logged in, redirect to account/username page 
+*/
 function loginGet (req, res, next) {
   if (!req.user){
     res.render('login', {message: req.session.messages});
@@ -24,40 +32,20 @@ function loginGet (req, res, next) {
   else{
     res.redirect('/account/' + req.user.username);
   }
-/*  res.render('login', { 
-    title: 'login',
-  	 });*/
 }
-
-/*// logining the user
-router.post('/', function(req, res, next) {
-  var username = req.body.username;
-  var password = req.body.password;
-
-  console.log (username, password);
-
-  //Validation
-  req.checkBody('username', 'Username is required').notEmpty();
-  req.checkBody('password', 'Password is required').notEmpty();
-  
-  //Check errors
-  var errors = req.validationErrors();
-  for (var i = 0; i < errors.length; i++) {
-    console.log(errors[i]);
-  }
- if(errors){
-  	res.render('login',{
-  		errors: errors
-  	});
-  }
-  else{
-  	console.log('PASSED');
-  }
-});*/
-
+/**
+ * First checks if the given username exists or not. If username doesnt exist, 
+ * return 'invalid username'. If it does, then check password with its hash. It it 
+ * matches, login. Elase return 'Invalid Password'
+ * @param  {[type]} username [description]
+ * @param  {[type]} password [description]
+ * @param  {[type]} done){                  User.getUsersByUsername(username, function(err, user){      if(err) throw err;      if (!user){        return done(null, false, {message: 'Invalid Username!'});      }      User.comparePassword(password, user.password, function(err, isMatch){        if (err) throw err;        if (isMatch){          return done(null, user);        } else {          return done(null, false, {message: "Invalid Password!"});        }      });    });  }) [description]
+ * @return {[type]}          [description]
+ */
 passport.use(new LocalStrategy(
   function(username, password, done){
     User.getUsersByUsername(username, function(err, user){
+      console.log("passport" + user);
       if(err) throw err;
       if (!user){
         return done(null, false, {message: 'Invalid Username!'});
@@ -73,6 +61,7 @@ passport.use(new LocalStrategy(
       });
     });
   }));
+
 
 passport.serializeUser(function(user, done) {
   done(null, user.id);
@@ -100,7 +89,32 @@ passport.deserializeUser(function(id, done) {
     //  });
   });*/
 
+
+/**
+loginPost
+validates if username and password are non empty or not
+*/
+/**
+ * [loginPost get the username, password values from the fields in the website
+ * and do basic validation. If theyre valid, try to log in using the passport functions]
+ */
 function loginPost(req, res, next) {
+
+  var username = req.body.username;
+  var password = req.body.password;
+
+  //Validation
+  req.checkBody('username', 'Username is required').notEmpty();
+  req.checkBody('password', 'Password is required').notEmpty();
+
+  var errors = req.validationErrors();
+  console.log(errors);
+  if(errors){
+    res.render('login',{
+      errors: errors,
+    });
+  } else{ 
+
   // ask passport to authenticate
   passport.authenticate('local', function(err, user, info) {
     if (err) {
@@ -121,16 +135,17 @@ function loginPost(req, res, next) {
       if (err) {
         req.session.messages = "Error";
         return next(err);
+
       }
 
       // set the message
       req.session.messages = "Login successfully";
       return res.redirect('/account/' + req.user.username);
     });
-    
   })(req, res, next);
-}
 
+}
+}
 
 
 
