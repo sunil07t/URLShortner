@@ -32,7 +32,11 @@ app.set('view engine', 'handlebars');  //view engine. ejs vs jade
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser());
 //app.use(bodyParser());
-app.use(session({ secret: 'keyboard cat' }));
+app.use(session({ 
+  secret: 'keyboard cat',
+  saveUninitialized: true,
+  resave: true
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 

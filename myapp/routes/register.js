@@ -55,7 +55,6 @@ router.post('/', function(req, res, next) {
       success_msg: 'Successfully Registered!',
        });
     console.log("SUCESS!");
->>>>>>> upstream/master
   }
 });
 

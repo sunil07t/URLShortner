@@ -41,7 +41,7 @@ uses bcrypt to salt and hash a given password string
  * @param  {[object]}   newUser  [newUser object contains username, passwords..]
  */
 module.exports.createUser = function(newUser, callback){
-	getUsersByUsername(newUser.username, function(err, user){
+	Users.getUsersByUsername(newUser.username, function(err, user){
 		if (user){
 			console.log("Username already exists");
 		}
@@ -56,7 +56,7 @@ module.exports.createUser = function(newUser, callback){
 
 module.exports.testcreateUser = function(newUser, callback){
 	console.log("testcreateUser");
-	this.getUsersByUsername(newUser.username, function(err, user){
+	Users.getUsersByUsername(newUser.username, function(err, user){
 		console.log("getursname + " + user + err);
 		if (user){
 			console.log("Username already exists");

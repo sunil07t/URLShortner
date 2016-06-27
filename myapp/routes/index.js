@@ -13,7 +13,7 @@ router.get('/', function(req, res, next) {
 router.post('/', urlPost);
 
 function urlPost(req, res, next){
-	console.log("index urlpost");
+	//console.log("index urlpost");
 	var input = req.body.input;
 
 	req.checkBody('input','Input URL is empty').notEmpty();
